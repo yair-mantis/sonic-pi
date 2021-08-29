@@ -166,6 +166,6 @@ jobs:
     - name: artifacts
       uses: actions/upload-artifact@v2.2.4
       with:
-          name: ${{matrix.title}}_${{matrix.os}}_${{arch}}_${{build_type}}
+          name: ${{matrix.title}}_${{matrix.os}}_${{matrix.arch}}_${{matrix.build_type}}
           path: ${{github.workspace}}/app/build/sonic-pi
 
