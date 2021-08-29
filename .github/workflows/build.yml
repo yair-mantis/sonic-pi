@@ -167,5 +167,5 @@ jobs:
       uses: actions/upload-artifact@v2.2.4
       with:
           name: ${{matrix.title}}_${{matrix.os}}_${{matrix.arch}}_${{matrix.build_type}}
-          path: ${{github.workspace}}/app/build/
+          path: ${{github.workspace}}/app/build/gui/qt/sonic-pi
 
