@@ -6,6 +6,9 @@ jobs:
     name: Build on self hosted aarch64
     steps:
       - uses: actions/checkout@v2.1.0
+      - uses: gleam-lang/setup-erlang@v1.1.2
+        with:
+          otp-version: "22.x"
           
       # run the prebuild and config scripts  
       - name: run prebuild script
