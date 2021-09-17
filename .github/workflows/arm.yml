@@ -6,7 +6,12 @@ jobs:
     name: Build on self hosted aarch64
     steps:
       - uses: actions/checkout@v2.1.0
-      
+
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v1.9
+        with:
+          cmake-version: '3.21.x'
+          
       # run the prebuild and config scripts  
       - name: run prebuild script
         working-directory: ${{github.workspace}}/app
