@@ -1,0 +1,50 @@
+on: [push]
+
+jobs:
+  armv8_job:
+    runs-on: [self-hosted, linux, ARM64]
+    name: Build on self hosted aarch64
+    steps:
+      - uses: actions/checkout@v2.1.0
+     
+      - uses: actions/cache@v2
+        with:
+          path: ${{github.workspace}}/app/server/ruby/vendor
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+            
+      # run the prebuild and config scripts  
+      - name: run prebuild script
+        working-directory: ${{github.workspace}}/app
+        run: |
+            . /home/nvidia/.asdf/installs/erlang/24.0.6/activate
+            ./linux-prebuild.sh
+      
+      - name: run config script
+        working-directory: ${{github.workspace}}/app
+        run: |
+            . /home/nvidia/.asdf/installs/erlang/24.0.6/activate
+            ./linux-config.sh
+            
+      - name: run build
+        working-directory: ${{github.workspace}}/app/build
+        run: |
+            cmake --build . --config Release
+
+      # Set an output parameter `uname` for use in subsequent steps
+      - run: |
+         uname -a
+         echo ::set-output name=uname::$(uname -a)
+
+    
+      - name: Ruby Tests (Mac/Linux)
+        working-directory: ${{github.workspace}}/app/server/ruby
+        run: rake test 
+        
+      - name: artifacts
+        uses: actions/upload-artifact@v2.2.4
+        with:
+            name: sonic-pi_arm8_release
+            path: ${{github.workspace}}/app/build/gui/qt/sonic-pi
+      
