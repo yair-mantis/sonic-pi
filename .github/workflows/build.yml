@@ -221,13 +221,7 @@ jobs:
           name: Logs_${{matrix.title}}_${{matrix.build_type}}
           path: |
             ~/.sonic-pi/log/*.log
-            
-    - name: artifacts-windows
-      uses: actions/upload-artifact@v2.2.4
-      with:
-          name: sonic-pi_${{matrix.title}}_${{matrix.os}}_${{matrix.arch}}_${{matrix.build_type}}
-          path: ${{github.workspace}}/app/build/
-          if: matrix.os == 'windows-latest'
+          
           
     - name: artifacts-osx/linux
       uses: actions/upload-artifact@v2.2.4
