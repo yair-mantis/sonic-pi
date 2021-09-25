@@ -30,6 +30,7 @@ jobs:
       id: ruby-inst
       with:
         ruby-version: 2.7
+        bundler-cache: true
       if: matrix.os == 'windows-latest'
 
     # Install gems Windows
