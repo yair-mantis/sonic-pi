@@ -3,9 +3,9 @@ name: Build
 on:
   # Do it on every push or PR on these branches
   push:
-    branches: [ dev, main, workflow_dispatch, features/sp-api ]
+    branches: [ dev ]
   pull_request:
-    branches: [ dev, main, workflow_dispatch, features/sp-api ]
+    branches: [ dev ]
 
 jobs:
   # Build Sonic Pi
@@ -104,33 +104,40 @@ jobs:
     - name: Do build
       working-directory: ${{github.workspace}}/app/build
       run: cmake --build . --config ${{ matrix.build_type }}
+      
+    # installer pack
+    - name: Do pack
+      working-directory: ${{github.workspace}}/installer/windows
+      run: install.bat
 
-
-    - name: API Tests Windows - Install Scream Audio Device
-      shell: powershell
-      run: |
-        Start-Service audio*
-        Invoke-WebRequest https://github.com/duncanthrax/scream/releases/download/3.6/Scream3.6.zip -OutFile C:\Scream3.6.zip
-        Extract-7Zip -Path C:\Scream3.6.zip -DestinationPath C:\Scream
-        $cert = (Get-AuthenticodeSignature C:\Scream\Install\driver\Scream.sys).SignerCertificate
-        $store = [System.Security.Cryptography.X509Certificates.X509Store]::new("TrustedPublisher", "LocalMachine")
-        $store.Open("ReadWrite")
-        $store.Add($cert)
-        $store.Close()
-        cd C:\Scream\Install\driver
-        C:\Scream\Install\helpers\devcon install Scream.inf *Scream
-      if: matrix.os == 'windows-latest'
-
-    - name: API Tests - Windows
-      shell: cmd
-      working-directory: ${{github.workspace}}/app/build/api-tests
-      run: ctest --verbose
-      if: matrix.os == 'windows-latest'
+    # - name: API Tests Windows - Install Scream Audio Device
+    #   shell: powershell
+    #   run: |
+    #     Start-Service audio*
+    #     Invoke-WebRequest https://github.com/duncanthrax/scream/releases/download/3.6/Scream3.6.zip -OutFile C:\Scream3.6.zip
+    #     Extract-7Zip -Path C:\Scream3.6.zip -DestinationPath C:\Scream
+    #     $cert = (Get-AuthenticodeSignature C:\Scream\Install\driver\Scream.sys).SignerCertificate
+    #     $store = [System.Security.Cryptography.X509Certificates.X509Store]::new("TrustedPublisher", "LocalMachine")
+    #     $store.Open("ReadWrite")
+    #     $store.Add($cert)
+    #     $store.Close()
+    #     cd C:\Scream\Install\driver
+    #     C:\Scream\Install\helpers\devcon install Scream.inf *Scream
+    #   if: matrix.os == 'windows-latest'
+	 
+    # - name: API Tests - Windows
+    #   shell: cmd
+    #   working-directory: ${{github.workspace}}/app/build/api-tests
+    #   run: ctest --verbose
+    #   if: matrix.os == 'windows-latest'
             
     - name: artifacts-windows
       uses: actions/upload-artifact@v2.2.4
       with:
           name: sonic-pi_${{matrix.title}}_${{matrix.os}}_${{matrix.arch}}_${{matrix.build_type}}
-          path: ${{github.workspace}}/app/build/gui/qt/Release
+          path: |
+            ${{github.workspace}}/installer/windows
+            !${{github.workspace}}/installer/windows/install.bat
+            !${{github.workspace}}/installer/windows/prune.rb
     
 
