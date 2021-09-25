@@ -107,9 +107,10 @@ jobs:
       
     # installer pack
     - name: Do pack
-      working-directory: ${{github.workspace}}/installer/windows
-      run: install.bat
-      shell: cmd
+      working-directory: ${{github.workspace}}/install/windows
+      run: |
+       $env:Path += ";C:\Program Files (x86)\WiX Toolset v3.11\bin"
+       install.bat
 
     # - name: API Tests Windows - Install Scream Audio Device
     #   shell: powershell
@@ -135,10 +136,15 @@ jobs:
     - name: artifacts-windows
       uses: actions/upload-artifact@v2.2.4
       with:
-          name: sonic-pi_${{matrix.title}}_${{matrix.os}}_${{matrix.arch}}_${{matrix.build_type}}
+          name: sonic-pi_${{matrix.title}}_${{matrix.arch}}_${{matrix.build_type}}
           path: |
-            ${{github.workspace}}/installer/windows
-            !${{github.workspace}}/installer/windows/install.bat
-            !${{github.workspace}}/installer/windows/prune.rb
+            ${{github.workspace}}/install/windows
+            !${{github.workspace}}/install/windows/install.bat
+            !${{github.workspace}}/install/windows/prune.rb
     
-
+    - name: artifacts-windows-installer
+      uses: actions/upload-artifact@v2.2.4
+      with:
+          name: sonic-pi_${{matrix.title}}_${{matrix.arch}}_${{matrix.build_type}}_installer
+          path: |
+            ${{github.workspace}}/install/windows/wix/Sonic-Pi.msi
