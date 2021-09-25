@@ -109,6 +109,7 @@ jobs:
     - name: Do pack
       working-directory: ${{github.workspace}}/installer/windows
       run: install.bat
+      shell: cmd
 
     # - name: API Tests Windows - Install Scream Audio Device
     #   shell: powershell
