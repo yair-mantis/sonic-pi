@@ -138,9 +138,8 @@ jobs:
       with:
           name: sonic-pi_${{matrix.title}}_${{matrix.arch}}_${{matrix.build_type}}
           path: |
-            ${{github.workspace}}/install/windows
-            !${{github.workspace}}/install/windows/install.bat
-            !${{github.workspace}}/install/windows/prune.rb
+            ${{github.workspace}}/install/windows/app
+            ${{github.workspace}}/install/windows/etc
     
     - name: artifacts-windows-installer
       uses: actions/upload-artifact@v2.2.4
