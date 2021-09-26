@@ -19,13 +19,13 @@ jobs:
         working-directory: ${{github.workspace}}/app
         run: |
             . /home/nvidia/.asdf/installs/erlang/24.0.6/activate
-            ./linux-prebuild.sh
+            ./pi-prebuild.sh
       
       - name: run config script
         working-directory: ${{github.workspace}}/app
         run: |
             . /home/nvidia/.asdf/installs/erlang/24.0.6/activate
-            ./linux-config.sh
+            ./pi-config.sh
             
       - name: run build
         working-directory: ${{github.workspace}}/app/build
