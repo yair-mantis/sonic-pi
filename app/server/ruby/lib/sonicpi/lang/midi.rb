@@ -377,15 +377,15 @@ You may also optionally pass the velocity value as a floating point value betwee
 [MIDI 1.0 Specification - Channel Voice Messages - Note on event](https://www.midi.org/specifications/item/table-1-summary-of-midi-message)
 ",
       examples:       [
-        "midi_note_on :e3  #=> Sends MIDI note on :e3 with the default velocity of 12 to all ports and channels",
-        "midi_note_on :e3, 12  #=> Sends MIDI note on :e3 with velocity 12 to all channels",
-        "midi_note_on :e3, 12, channel: 3  #=> Sends MIDI note on :e3 with velocity 12 on channel 3",
-        "midi_note_on :e3, velocity: 100 #=> Sends MIDI note on for :e3 with velocity 100",
-        "midi_note_on :e3, vel_f: 0.8 #=> Scales velocity 0.8 to MIDI value 102 and sends MIDI note on for :e3 with velocity 102",
+        "midi_note_on :e3  #=> Sends MIDI note on for note :e3 with the default velocity of 12 to all ports and channels",
+        "midi_note_on :e3, 12  #=> Sends MIDI note on for note :e3 with velocity 12 to all channels",
+        "midi_note_on :e3, 12, channel: 3  #=> Sends MIDI note on for note :e3 with velocity 12 on channel 3",
+        "midi_note_on :e3, velocity: 100 #=> Sends MIDI note on for note :e3 with velocity 100",
+        "midi_note_on :e3, vel_f: 0.8 #=> Scales velocity 0.8 to MIDI value 102 and sends MIDI note on for note :e3 with velocity 102",
         "midi_note_on 60.3, 50.5 #=> Rounds params up or down to the nearest whole number and sends MIDI note on for note 60 with velocity 51",
-        "midi_note_on :e3, channel: [1, 3, 5] #=> Send MIDI note :e3 on to channels 1, 3, 5 on all connected ports",
-        "midi_note_on :e3, port: [\"foo\", \"bar\"] #=> Send MIDI note :e3 on to on all channels on ports named \"foo\" and \"bar\"",
-        "midi_note_on :e3, channel: 1, port: \"foo\" #=> Send MIDI note :e3 on only on channel 1 on port \"foo\""
+        "midi_note_on :e3, channel: [1, 3, 5] #=> Send MIDI note on for note :e3 to channels 1, 3, 5 on all connected ports",
+        "midi_note_on :e3, port: [\"foo\", \"bar\"] #=> Send MIDI note on for note :e3 to all channels on ports named \"foo\" and \"bar\"",
+        "midi_note_on :e3, channel: 1, port: \"foo\" #=> Send MIDI note on for note :e3 only on channel 1 on port \"foo\""
       ]
 
 
@@ -448,15 +448,15 @@ You may also optionally pass the release velocity value as a floating point valu
 [MIDI 1.0 Specification - Channel Voice Messages - Note off event](https://www.midi.org/specifications/item/table-1-summary-of-midi-message)
 ",
       examples:       [
-        "midi_note_off :e3 #=> Sends MIDI note off for :e3 with the default release velocity of 127 to all ports and channels",
-        "midi_note_off :e3, 12  #=> Sends MIDI note off on :e3 with velocity 12 on all channels",
-        "midi_note_off :e3, 12, channel: 3  #=> Sends MIDI note off on :e3 with velocity 12 to channel 3",
-        "midi_note_off :e3, velocity: 100 #=> Sends MIDI note on for :e3 with release velocity 100",
-        "midi_note_off :e3, vel_f: 0.8 #=> Scales release velocity 0.8 to MIDI value 102 and sends MIDI note off for :e3 with release velocity 102",
-        "midi_note_off 60.3, 50.5 #=> Rounds params up or down to the nearest whole number and sends MIDI note off for note 60 with velocity 51",
-        "midi_note_off :e3, channel: [1, 3, 5] #=> Send MIDI note off on :e3 to channels 1, 3, 5 on all connected ports",
-        "midi_note_off :e3, port: [\"foo\", \"bar\"] #=> Send MIDI note off on :e3 to on all channels on ports named \"foo\" and \"bar\"",
-        "midi_note_off :e3, channel: 1, port: \"foo\" #=> Send MIDI note off on :e3 only on channel 1 on port \"foo\""
+        "midi_note_off :e3 #=> Sends MIDI note off for note :e3 with the default release velocity of 127 to all ports and channels",
+        "midi_note_off :e3, 12  #=> Sends MIDI note off for note :e3 with velocity 12 on all channels",
+        "midi_note_off :e3, 12, channel: 3  #=> Sends MIDI note off for note :e3 with velocity 12 to channel 3",
+        "midi_note_off :e3, velocity: 100 #=> Sends MIDI note off for note :e3 with release velocity 100",
+        "midi_note_off :e3, vel_f: 0.8 #=> Scales release velocity 0.8 to MIDI value 102 and sends MIDI note off for note :e3 with release velocity 102",
+        "midi_note_off 60.3, 50.5 #=> Rounds params up or down to the nearest whole number and sends MIDI note off for note 60 with release velocity 51",
+        "midi_note_off :e3, channel: [1, 3, 5] #=> Send MIDI note off for note :e3 to channels 1, 3, 5 on all connected ports",
+        "midi_note_off :e3, port: [\"foo\", \"bar\"] #=> Send MIDI note off for note :e3 to all channels on ports named \"foo\" and \"bar\"",
+        "midi_note_off :e3, channel: 1, port: \"foo\" #=> Send MIDI note off for note :e3 only on channel 1 on port \"foo\""
       ]
 
 
@@ -737,7 +737,7 @@ Typical MIDI values such as note or cc are represented with 7 bit numbers which 
         nil
       end
       doc name:           :midi_pc,
-          introduced:     Version.new(3,0,2),
+          introduced:     Version.new(3,1,0),
           summary:        "Send MIDI program change message",
           args:           [[:program_num, :midi]],
           returns:        :nil,
@@ -756,7 +756,7 @@ Program number can be passed as a note such as `:e3` and decimal values will be 
         "midi_pc 100  #=> Sends MIDI pc message to all ports and channels",
         "midi_pc :e7  #=> Sends MIDI pc message to all ports and channels",
         "midi_pc 100, channel: 5  #=> Sends MIDI pc message on channel 5 to all ports",
-        "midi_pc 100, channel: 5  #=> Sends MIDI pc message on channel 5 to all ports",
+        "midi_pc 100, port: [\"foo\", \"bar\"], channel: 5  #=> Sends MIDI pc message on channel 5 to ports named \"foo\" and \"bar\"",
         "midi_pc 100, channel: [1, 5]  #=> Sends MIDI pc message on channel 1 and 5 to all ports"
 ]
 

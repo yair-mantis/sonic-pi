@@ -129,6 +129,7 @@ book/
 ## IntelliJ IDEA
 
 *.iml
+.idea
 
 ## i18n auto-generated files
 
@@ -148,5 +149,6 @@ etc/synthdefs/designs/overtone/sonic-pi/native
 
 
 # Erlang priv dir (for dlls)
-app/server/erlang/tau/priv/*
-app/server/erlang/tau/ebin/*
+app/server/beam/tau/priv/*
+app/server/beam/tau/ebin/*
+app/server/beam/tau/log/*

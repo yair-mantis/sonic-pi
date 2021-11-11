@@ -97,8 +97,8 @@ module SonicPi
       end
     end
 
-    def link_is_enabled?
-      res = api_rpc("/link-is-enabled")
+    def link_is_on?
+      res = api_rpc("/link-is-on")
       res[0] == 1
     end
 
@@ -168,9 +168,9 @@ module SonicPi
 
     def cue_server_internal!(internal)
       if internal
-        @tau_comms.send("/internal-cue-port", 1)
+        @tau_comms.send("/osc-in-udp-loopback-restricted", 1)
       else
-        @tau_comms.send("/internal-cue-port", 0)
+        @tau_comms.send("/osc-in-udp-loopback-restricted", 0)
       end
     end
 

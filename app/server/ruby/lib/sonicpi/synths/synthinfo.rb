@@ -279,7 +279,7 @@ module SonicPi
               a[1].is_a?(Numeric)
               ))
         end
-        [l, "must be a buffer description. Such as a buffer, :foo, \"foo\", or [:foo, 4]"]
+        [l, "must be a buffer description, such as a buffer, :foo, \"foo\", or [:foo, 4]"]
       end
 
       def v_sum_less_than_oet(arg1, arg2, max)
@@ -1169,7 +1169,7 @@ Also, note that audio in isn't yet supported on Raspberry Pi."
       end
 
       def doc
-        "A sine wave with a fundamental frequency which is modulated at audio rate by another sine wave with a specific modulation, division and depth. Useful for generating a wide range of sounds by playing with the divisor and depth params. Great for deep powerful bass and crazy 70s sci-fi sounds."
+        "A sine wave with a fundamental frequency which is modulated at audio rate by another sine wave with a specific modulation, division and depth. Useful for generating a wide range of sounds by playing with the divisor and depth params. Great for deep powerful bass and fun 70s sci-fi sounds."
       end
 
       def arg_defaults
@@ -1263,7 +1263,7 @@ Also, note that audio in isn't yet supported on Raspberry Pi."
       end
 
       def doc
-        "The FM synth modulating between two notes - the duration of the modulation can be modified using the mod_phase arg, the range (number of notes jumped between) by the mod_range arg and the width of the jumps by the mod_width param. The FM synth is a sine wave with a fundamental frequency which is modulated at audio rate by another sine wave with a specific modulation, division and depth. Useful for generating a wide range of sounds by playing with the `:divisor` and `:depth` params. Great for deep powerful bass and crazy 70s sci-fi sounds."
+        "The FM synth modulating between two notes - the duration of the modulation can be modified using the mod_phase arg, the range (number of notes jumped between) by the mod_range arg and the width of the jumps by the mod_width param. The FM synth is a sine wave with a fundamental frequency which is modulated at audio rate by another sine wave with a specific modulation, division and depth. Useful for generating a wide range of sounds by playing with the `:divisor` and `:depth` params. Great for deep powerful bass and fun 70s sci-fi sounds."
       end
 
       def arg_defaults
@@ -3308,7 +3308,7 @@ Steal This Sound,  Mitchell Sigman"
       end
 
       def doc
-        "A lead synth inspired by the Winwood songs from the early 80s.  Adapted for Sonic Pi from [Steal This Sound](https://raw.githubusercontent.com/supercollider/supercollider/develop/examples/demonstrations/stealthissound.scd). Published there under [GPL v3](https://www.gnu.org/licenses/gpl-3.0.en.html), so re-published under the same terms. The source code is available [on the Sonic Pi GitHub repository](https://github.com/sonic-pi-net/sonic-pi). Date of modification: 10.01.2021"
+        "A lead synth inspired by the Winwood songs from the early 80s. Adapted for Sonic Pi from [Steal This Sound](https://raw.githubusercontent.com/supercollider/supercollider/develop/examples/demonstrations/stealthissound.scd)."
       end
 
       def arg_defaults
@@ -3326,13 +3326,13 @@ Steal This Sound,  Mitchell Sigman"
           :pan_slide_shape => 1,
           :pan_slide_curve => 0,
 
-          :attack => 0.01,
+          :attack => 0,
           :decay => 0,
-          :sustain => 0.9,
-          :release => 0.05,
+          :sustain => 0,
+          :release => 1,
           :attack_level => 1,
-          :decay_level => 0.5,
-          :sustain_level => 0.5,
+          :decay_level => :sustain_level,
+          :sustain_level => 1,
 
           :cutoff => 119,
           :cutoff_slide => 0,
@@ -3390,7 +3390,7 @@ Steal This Sound,  Mitchell Sigman"
       end
 
       def doc
-        "A soft bass synth inspired by the sounds of the 80s. Use together with :bass_highend if you want to give it a gargling component. Adapted for Sonic Pi from [Steal This Sound](https://raw.githubusercontent.com/supercollider/supercollider/develop/examples/demonstrations/stealthissound.scd). Published there under [GPL v3](https://www.gnu.org/licenses/gpl-3.0.en.html), so re-published under the same terms. The source code is available [on the Sonic Pi GitHub repository](https://github.com/sonic-pi-net/sonic-pi). Date of modification: 10.01.2021"
+        "A soft bass synth inspired by the sounds of the 80s. Use together with :bass_highend if you want to give it a gargling component. Adapted for Sonic Pi from [Steal This Sound](https://raw.githubusercontent.com/supercollider/supercollider/develop/examples/demonstrations/stealthissound.scd)."
       end
 
       def arg_defaults
@@ -3408,13 +3408,13 @@ Steal This Sound,  Mitchell Sigman"
           :pan_slide_shape => 1,
           :pan_slide_curve => 0,
 
-          :attack => 0.01,
+          :attack => 0,
           :decay => 0,
-          :sustain => 0.9,
-          :release => 0.05,
+          :sustain => 0,
+          :release => 1,
           :attack_level => 1,
-          :decay_level => 0.5,
-          :sustain_level => 0,
+          :decay_level => :sustain_level,
+          :sustain_level => 1,
 
           :cutoff => 83,
           :cutoff_slide => 0,
@@ -3443,7 +3443,7 @@ Steal This Sound,  Mitchell Sigman"
       end
 
       def doc
-        "An addition to the :bass_foundation synth inspired by the sounds of the 80s. Use them together if you want to give it a rough, slurping, or gargling component. Adapted for Sonic Pi from [Steal This Sound](https://raw.githubusercontent.com/supercollider/supercollider/develop/examples/demonstrations/stealthissound.scd). Published there under [GPL v3](https://www.gnu.org/licenses/gpl-3.0.en.html), so re-published under the same terms. The source code is available [on the Sonic Pi GitHub repository](https://github.com/sonic-pi-net/sonic-pi). Date of modification: 11.01.2021"
+        "An addition to the :bass_foundation synth inspired by the sounds of the 80s. Use them together if you want to give it a rough, slurping, or gargling component. Adapted for Sonic Pi from [Steal This Sound](https://raw.githubusercontent.com/supercollider/supercollider/develop/examples/demonstrations/stealthissound.scd)."
       end
 
       def arg_defaults
@@ -3461,13 +3461,13 @@ Steal This Sound,  Mitchell Sigman"
           :pan_slide_shape => 1,
           :pan_slide_curve => 0,
 
-          :attack => 0.01,
+          :attack => 0,
           :decay => 0,
-          :sustain => 0.9,
-          :release => 0.05,
+          :sustain => 0,
+          :release => 1,
           :attack_level => 1,
-          :decay_level => 0.5,
-          :sustain_level => 0,
+          :decay_level => :sustain_level,
+          :sustain_level => 1,
 
           :cutoff => 102,
           :cutoff_slide => 0,
@@ -5798,7 +5798,7 @@ end
       end
 
       def doc
-        "Versatile wobble FX. Will repeatedly modulate a range of filters (rlpf, rhpf) between two cutoff values using a range of control wave forms (saw, pulse, tri, sine). You may alter the phase duration of the wobble, and the resonance of the filter. Combines well with the dsaw synth for crazy dub wobbles. Cutoff value is at cutoff_min at the start of phase"
+        "Versatile wobble FX. Will repeatedly modulate a range of filters (rlpf, rhpf) between two cutoff values using a range of control wave forms (saw, pulse, tri, sine). You may alter the phase duration of the wobble, and the resonance of the filter. Combines well with the dsaw synth for fun dub wobbles. Cutoff value is at cutoff_min at the start of phase"
       end
 
       def arg_defaults
@@ -8303,7 +8303,10 @@ Note: sliding the `phase:` opt with `phase_slide:` will also cause each echo dur
             doc << "use_synth <span class=\"symbol\">:#{safe_k}</span>"
           else
             safe_k = k.to_s[3..-1]
-            doc << "with_fx <span class=\"symbol\">:#{safe_k}</span> <span class=\"keyword\">do</span>\n"
+            opts = if safe_k == 'record'
+                     ", <span class=\"symbol\">buffer: :foo</span>"
+                   end
+            doc << "with_fx <span class=\"symbol\">:#{safe_k}</span>#{opts} <span class=\"keyword\">do</span>\n"
             doc << "  play <span class=\"number\">50</span>\n"
             doc << "<span class=\"keyword\">end</span>"
           end
@@ -8330,7 +8333,7 @@ Note: sliding the `phase:` opt with `phase_slide:` will also cause each echo dur
             doc <<  Kramdown::Document.new(docstring).to_html
             doc << "  <p class=\"properties\">\n"
             doc << "   Default: #{av[:default]}\n"
-            doc << "   <br/>#{av[:constraints].join(",").capitalize}\n" unless av[:constraints].empty?
+            doc << "   <br/>#{av[:constraints].join(", ").capitalize}\n" unless av[:constraints].empty?
             doc << "   <br/>#{av[:modulatable] ? "May be changed whilst playing" : "Can not be changed once set"}\n"
             doc << "   <br/><a href=\"#slide\">Has slide options to shape changes</a>\n" if av[:slidable]
             doc << "   <br/>Scaled with current BPM value\n" if av[:bpm_scale]
@@ -8377,7 +8380,7 @@ Note: sliding the `phase:` opt with `phase_slide:` will also cause each echo dur
             res << "  * #{ak}:\n"
             res << "    - doc: #{av[:doc] || 'write me'}\n"
             res << "    - default: #{av[:default]}\n"
-            res << "    - constraints: #{av[:constraints].empty? ? "none" : av[:constraints].join(",")}\n"
+            res << "    - constraints: #{av[:constraints].empty? ? "none" : av[:constraints].join(", ").capitalize}\n"
             res << "    - #{av[:modulatable] ? "May be changed whilst playing" : "Can not be changed once set"}\n"
             res << "    - Scaled with current BPM value\n" if av[:bpm_scale]
             res << "    - Accepts note symbols such as :e3\n" if av[:midi]
@@ -8449,7 +8452,7 @@ Note: sliding the `phase:` opt with `phase_slide:` will also cause each echo dur
             doc << "  <p>#{av[:doc] || 'write me'}</p>\n"
             doc << "  <p class=\"properties\">\n"
             doc << "   Default: #{av[:default]}\n"
-            doc << "   <br/>#{av[:constraints].join(",")}\n" unless av[:constraints].empty?
+            doc << "   <br/>#{av[:constraints].join(", ").capitalize}\n" unless av[:constraints].empty?
             if av[:slidable]
               doc << "   <br/>May be changed whilst playing\n"
               doc << "   <br/><a href=\"#slide\">Has slide options to shape changes</a>\n"

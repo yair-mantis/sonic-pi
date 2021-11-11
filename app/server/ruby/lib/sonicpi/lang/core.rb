@@ -407,7 +407,7 @@ end
           examples: ["
 live_loop :foo do
   with_swing 0.1 do
-    sample :elec_beep      # plays the :elec_beep sample late except for every 4th time
+    sample :elec_beep      # plays the :elec_beep sample late except on the 1st beat of every 4
   end
   sleep 0.25
 end
@@ -416,7 +416,7 @@ end
 live_loop :foo do
   with_swing -0.1 do
     sample :elec_beep      # plays the :elec_beep sample slightly early
-  end                      # except for every 4th time
+  end                      # on the 1st beat of every 4
   sleep 0.25
 end
 ",
@@ -424,7 +424,7 @@ end
 live_loop :foo do
   with_swing -0.1, pulse: 8 do
     sample :elec_beep      # plays the :elec_beep sample slightly early
-  end                      # except for every 8th time
+  end                      #  on the 1st beat of every 8
   sleep 0.25
 end
 ",
@@ -434,11 +434,11 @@ end
 live_loop :foo do
   with_swing 0.14, tick: :a do
     sample :elec_beep      # plays the :elec_beep sample slightly late
-  end                      # except for every 4th time
+  end                      #  on the 1st beat of every 4
 
   with_swing -0.1, tick: :b do
     sample :elec_beep, rate: 2  # plays the :elec_beep sample at double rate
-  end                           #  slightly early except for every 4th time
+  end                           #  slightly early except  on the 1st beat of every 4
   sleep 0.25
 end",
         "
@@ -455,7 +455,24 @@ live_loop :bar do
                           # another live loop (sync will match the timing and clock of
                           # the sending live loop)
 end
-"      ]
+",
+      "
+live_loop :foo do
+  with_swing 0.1, offset: 2 do
+    sample :elec_beep      # plays the :elec_beep sample slightly late
+  end                      # on the the 3rd beat of every 4
+  sleep 0.25
+end
+",
+      "
+live_loop :foo do
+  with_swing 0.1, pulse: 2, offset: 1 do
+    sample :elec_beep      # plays the :elec_beep sample slightly late
+  end                      # on the 2nd beat of every 2
+  sleep 0.25
+end
+"
+      ]
 
 
 
@@ -688,7 +705,8 @@ osc \"/foo/baz\"             # Send an OSC message to port 7000
 
       def osc_send(host, port, path, *args)
         host = host.to_s.strip
-        @tau_api.send_osc(host, port, path, *args)
+        t = __get_spider_schedule_time
+        @tau_api.send_osc_at(t, host, port, path, *args)
         __delayed_message "OSC -> #{host}, #{port}, #{path}, #{args}" unless __thread_locals.get(:sonic_pi_suppress_osc_logging)
       end
       doc name:           :osc_send,
@@ -1732,6 +1750,9 @@ end"
         end
 
         return [].ring if start == finish
+
+        raise ArgumentError, "step size: opt for fn range should be a non-zero number" unless step_size != 0
+        
         step_size = step_size.abs
         res = []
         cur = start
@@ -3565,7 +3586,7 @@ You can see the 'buckets' that the numbers between 0 and 1 fall into with the fo
 
       def set_link_bpm!(bpm)
         raise ArgumentError, "use_bpm's BPM should be a positive value or :link. You tried to use: #{bpm}" unless bpm == :link || (bpm.is_a?(Numeric) && bpm > 0)
-        raise "ArgumentErrot, set_link_bpm! requires a number for the bpm argument in the range 20 -> 999. You tried to use: #{bpm}" unless bpm.is_a?(Numeric) && bpm >= 20 && bpm <= 999
+        raise ArgumentError, "set_link_bpm! requires a number for the bpm argument in the range 20 -> 999. You tried to use: #{bpm}" unless bpm.is_a?(Numeric) && bpm >= 20 && bpm <= 999
         @tau_api.link_set_bpm_at_clock_time!(bpm.to_f, __get_spider_time)
       end
       doc name:      :set_link_bpm!,
@@ -3575,7 +3596,7 @@ You can see the 'buckets' that the numbers between 0 and 1 fall into with the fo
 
 Note that this will *also* change the tempo of *all link metronomes* connected to the local network. This includes other instances of Sonic Pi, Music Production tools like Ableton Live, VJ tools like Resolume, DJ hardware like the MPC and many iPad music apps.
 
-For a full list of link-compatable apps and devices see:  https://www.ableton.com/en/link/products/
+For a full list of link-compatible apps and devices see:  https://www.ableton.com/en/link/products/
 
 Also note that the current thread does not have to be in Link BPM mode for this function to affect the Link clock's BPM.
 
@@ -4353,11 +4374,11 @@ puts current_sched_ahead_time # Prints 0.5"]
           m = last_sync.bpm
         else
           t = current_time
-        p = __system_thread_locals.get(:sonic_pi_spider_thread_priority, -100)
-        i = __current_thread_id
-        d = __system_thread_locals.get(:sonic_pi_spider_thread_delta, 0)
-        b = current_beat
-        m = current_bpm_mode
+          p = __system_thread_locals.get(:sonic_pi_spider_thread_priority, -100)
+          i = __current_thread_id
+          d = __system_thread_locals.get(:sonic_pi_spider_thread_delta, 0)
+          b = current_beat
+          m = current_bpm_mode
         end
 
         se = @event_history.sync(t, p, i, d, b, m, cue_id, arg_matcher)

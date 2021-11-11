@@ -1188,7 +1188,7 @@ synth :dsaw, note: :e3 # This is triggered after 0.5s from start"
 
 
       def play(n, *args, &blk)
-        raise "Play expects a note to play, if you did something like 'play sample ...' you should probably remove 'play'" if n.is_a?(SonicPi::Node)
+        raise "Play expects a note to play. If you want to make a sound with a sample or buffer, you can just use 'sample ...' or 'sample buffer(...)'" if n.is_a?(SonicPi::Node) || n.is_a?(Buffer)
         if n.is_a?(Hash) && args.empty?
           synth nil, n, &blk
         else
@@ -2215,6 +2215,11 @@ load_sample dir, /[Bb]ar/ # loads first sample which matches regex /[Bb]ar/ in \
       def sample_duration(*args)
         filts_and_sources, args_a = sample_split_filts_and_opts(args)
         path = resolve_sample_path(filts_and_sources)
+
+        if path.nil?
+            raise ArgumentError.new("Error calling sample_duration: filters matched no samples")
+        end
+
         dur = load_sample_at_path(path).duration
         args_h = merge_synth_arg_maps_array(args_a)
 

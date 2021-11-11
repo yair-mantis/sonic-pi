@@ -3,9 +3,11 @@ name: Build ubuntu/macOx
 on:
   # Do it on every push or PR on these branches
   push:
-    branches: [ dev, main, workflow_dispatch, features/sp-api ]
+    branches: [ dev, stable ]
   pull_request:
-    branches: [ dev, main, workflow_dispatch, features/sp-api ]
+    branches: [ dev, stable ]
+  # Do build on demand
+  workflow_dispatch:
 
 jobs:
   # Build Sonic Pi
@@ -111,7 +113,7 @@ jobs:
         QT_INSTALL_LOCATION: ${{env.Qt5_DIR}}
       run: |
         sudo apt install -y pulseaudio dbus-x11 libssl-dev ruby-dev supercollider-server sc3-plugins-server alsa-base alsa-utils jackd2 libjack-jackd2-dev libjack-jackd2-0 libasound2-dev librtmidi-dev pulseaudio-module-jack
-        ./linux-prebuild.sh --build-aubio
+        ./linux-prebuild.sh
       if: matrix.os == 'ubuntu-latest'
 
       # Prebuild on Mac
@@ -177,6 +179,31 @@ jobs:
       working-directory: ${{github.workspace}}/app/build
       run: cmake --build . --config ${{ matrix.build_type }}
 
+    - name: BEAM Tests Windows
+      shell: cmd
+      working-directory: ${{github.workspace}}/app/server/beam/tau
+      run: mix test
+      env:
+        TAU_LOG_PATH: ${{github.workspace}}/tau_log.txt
+        TAU_DISABLE_MIDI: true
+      if: matrix.os == 'windows-latest'
+
+    - name: BEAM Tests (Linux)
+      working-directory: ${{github.workspace}}/app/server/beam/tau
+      run: mix test
+      env:
+        TAU_LOG_PATH: ${{github.workspace}}/tau_log.txt
+        TAU_DISABLE_MIDI: true
+      if: matrix.os == 'ubuntu-latest'
+
+    - name: BEAM Tests (macOS)
+      working-directory: ${{github.workspace}}/app/server/beam/tau
+      run: mix test
+      env:
+        TAU_LOG_PATH: ${{github.workspace}}/tau_log.txt
+        TAU_DISABLE_MIDI: true
+      if: matrix.os == 'macos-latest'
+
     - name: Ruby Tests (Mac/Linux)
       working-directory: ${{github.workspace}}/app/server/ruby
       run: rake test
@@ -190,7 +217,7 @@ jobs:
     - name: API Tests - Linux
       working-directory: ${{github.workspace}}/app/build/api-tests
       run: |
-        jackd -d dummy &
+        jackd -rd dummy &
         ctest --verbose
       if: matrix.os == 'ubuntu-latest'
 
@@ -217,8 +244,9 @@ jobs:
 
     - name: Archive Logs
       uses: actions/upload-artifact@v2
+      if: ${{ always() }}
       with:
-          name: Logs_${{matrix.title}}_${{matrix.build_type}}
+          name: Logs_${{matrix.title}}_${{matrix.cc}}_${{matrix.arch}}_${{matrix.build_type}}
           path: |
             ~/.sonic-pi/log/*.log
           
